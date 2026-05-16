@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
 	"sync"
 )
 
 func main() {
 	args := os.Args[1:]
-	if len(args) < 1 {
-		fmt.Println("no website provided")
+	if len(args) < 3 {
+		fmt.Println("usage: crawler <url> <maxConcurrency> <maxPages>")
 		os.Exit(1)
 	}
-	if len(args) > 1 {
+	if len(args) > 3 {
 		fmt.Println("too many arguments provided")
 		os.Exit(1)
 	}
@@ -24,15 +25,27 @@ func main() {
 		os.Exit(1)
 	}
 
+	maxConcurrency, err := strconv.Atoi(args[1])
+	if err != nil || maxConcurrency < 1 {
+		fmt.Println("maxConcurrency must be a positive integer")
+		os.Exit(1)
+	}
+
+	maxPages, err := strconv.Atoi(args[2])
+	if err != nil || maxPages < 1 {
+		fmt.Println("maxPages must be a positive integer")
+		os.Exit(1)
+	}
+
 	fmt.Printf("starting crawl of: %s\n", baseURL)
 
-	const maxConcurrency = 5
 	cfg := &config{
 		pages:              make(map[string]PageData),
 		baseURL:            baseURL,
 		mu:                 &sync.Mutex{},
 		concurrencyControl: make(chan struct{}, maxConcurrency),
 		wg:                 &sync.WaitGroup{},
+		maxPages:           maxPages,
 	}
 
 	cfg.wg.Add(1)
