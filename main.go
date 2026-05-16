@@ -56,4 +56,10 @@ func main() {
 	for page, data := range cfg.pages {
 		fmt.Printf("%s (heading: %q)\n", page, data.Heading)
 	}
+
+	if err := writeJSONReport(cfg.pages, "report.json"); err != nil {
+		fmt.Printf("error writing JSON report: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("report written to report.json")
 }
