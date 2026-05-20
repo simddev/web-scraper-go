@@ -12,4 +12,4 @@ go run . <url>
 
 - Crawls all pages of a given website
 - Reports internal link counts per page
-- Respects the same domain (no external links followed)
+- Respects the same domain (no external links followed)  
