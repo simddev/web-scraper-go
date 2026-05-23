@@ -1,4 +1,4 @@
-# Web Crawler
+# Web Crawler - Go version
 
 A CLI web crawler written in Go that generates an internal links report for any website. Built as part of the Boot.dev curriculum.
 
